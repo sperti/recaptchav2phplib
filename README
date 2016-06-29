@@ -1,0 +1,51 @@
+reCAPTCHA v2 php plugin README
+================
+
+The reCAPTCHA v2 PHP Library helps you use the reCAPTCHA API. 
+
+Documentation about reCAPTCHA v2 -> https://developers.google.com/recaptcha/intro
+
+
+From reCATPCHA there are some changes like:
+
+- RECAPTCHA_VERIFY_SERVER, now in https -> https://www.google.com/recaptcha/api/siteverify
+
+- parameters to send by POST:
+	. secret
+    . remoteip
+    . response
+
+
+To use this plugin, you can see the example-captcha file.
+You have to:
+
+
+- Create your public and private api key and include your domain(s)
+
+https://www.google.com/recaptcha/admin
+
+
+- Include the recaptchalibv2.php:
+
+require_once('recaptchalibv2.php');
+
+
+- add client side integration:
+
+echo recaptcha_get_html($publickey);
+
+
+- add the server side check, for example:
+
+if ($_POST["g-recaptcha-response"]) {
+    $resp = recaptcha_check_answer ($privatekey,
+                                    $_SERVER["REMOTE_ADDR"],
+                                    $_POST["g-recaptcha-response"]);
+
+    if ($resp->success) {
+            echo "Everything's OK!";
+    } else {
+            # set the error code so that we can display it
+            $error = $resp['error-codes'];
+    }
+}
